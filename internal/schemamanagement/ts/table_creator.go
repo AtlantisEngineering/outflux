@@ -53,7 +53,9 @@ func (d *defaultTableCreator) CreateTable(dbConn connections.PgxWrap, info *idrf
 		return err
 	}
 
-	return d.CreateHypertable(dbConn, info)
+	// Skip creating hypertables
+	// return d.CreateHypertable(dbConn, info)
+	return nil
 }
 
 func (d *defaultTableCreator) CreateHypertable(dbConn connections.PgxWrap, info *idrf.DataSet) error {
@@ -117,6 +119,7 @@ func dataSetToSQLTableDef(schema string, dataSet *idrf.DataSet) string {
 	columnDefinitions := make([]string, len(dataSet.Columns))
 	for i, column := range dataSet.Columns {
 		dataType := idrfToPgType(column.DataType)
+		// columnDefinitions[i] = fmt.Sprintf(columnDefTemplate, utils.ToSnakeCase(column.Name), dataType)
 		columnDefinitions[i] = fmt.Sprintf(columnDefTemplate, column.Name, dataType)
 	}
 
@@ -124,8 +127,10 @@ func dataSetToSQLTableDef(schema string, dataSet *idrf.DataSet) string {
 
 	var tableName string
 	if schema != "" {
+		// tableName = fmt.Sprintf(tableNameWithSchemaTemplate, schema, utils.ToSnakeCase(dataSet.DataSetName))
 		tableName = fmt.Sprintf(tableNameWithSchemaTemplate, schema, dataSet.DataSetName)
 	} else {
+		// tableName = fmt.Sprintf(tableNameTemplate, utils.ToSnakeCase(dataSet.DataSetName))
 		tableName = fmt.Sprintf(tableNameTemplate, dataSet.DataSetName)
 	}
 

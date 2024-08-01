@@ -4,6 +4,10 @@
 
 This repo contains code for exporting complete InfluxDB databases or selected measurements to TimescaleDB.
 
+***
+This fork disables hypertables creations and converts jsons keys to snake_case before writing to Postgres. 
+***
+
 ## Table of Contents
 
 1. [Installation](#installation)

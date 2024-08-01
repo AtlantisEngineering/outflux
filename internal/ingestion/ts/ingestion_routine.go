@@ -130,6 +130,15 @@ func commitTx(args *ingestDataArgs, tx *pgx.Tx) error {
 
 func copyToDb(args *ingestDataArgs, identifier *pgx.Identifier, tx *pgx.Tx, batch [][]interface{}) error {
 	source := pgx.CopyFromRows(batch)
+
+	// Snake case for table names and columns
+	// colNamesSnake := make([]string, len(args.colNames))
+	// for i := range args.colNames {
+	// 	colNamesSnake[i] = utils.ToSnakeCase(args.colNames[i])
+	// }
+	// args.colNames = colNamesSnake
+	// args.tableName = utils.ToSnakeCase(args.tableName)
+
 	_, err := args.dbConn.CopyFrom(*identifier, args.colNames, source)
 	if err != nil {
 		log.Printf("%s could not insert batch of rows in output db\n%v", args.ingestorID, err)

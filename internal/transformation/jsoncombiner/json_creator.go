@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/timescale/outflux/internal/idrf"
+	"github.com/timescale/outflux/internal/utils"
 )
 
 type jsonCreator interface {
@@ -18,6 +19,9 @@ func (d *defCreator) toJSON(row idrf.Row) ([]byte, error) {
 	data := make(map[string]interface{})
 	for colInd, colName := range d.colsToCombine {
 		val := row[colInd]
+		if result := utils.WantsSnakeCase(); result {
+			colName = utils.ToSnakeCase(colName)
+		}
 		data[colName] = val
 	}
 
