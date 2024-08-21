@@ -5,7 +5,11 @@
 This repo contains code for exporting complete InfluxDB databases or selected measurements to TimescaleDB.
 
 ***
-This fork disables hypertables creations and converts jsons keys to snake_case before writing to Postgres. 
+
+This fork does the following:
+- Sets 'create_default_indexes' to FALSE in hypertables creations
+- Converts jsons keys to snake_case before writing to Postgres (can be disabled by setting env var `OUTFLUX_NO_JSON_SNAKE_CASE` to "true"). 
+
 ***
 
 ## Table of Contents
@@ -51,7 +55,7 @@ Depending on where you downloaded it and the go version you're using, you may
 
 ```bash
 # Fetch the source code of Outflux in any directory
-$ git clone git@github.com:timescale/outflux.git
+$ git clone git@github.com:AtlantisEngineering/outflux.git
 $ cd ./outflux
 
 # Install the Outflux binary (will automaticly detect and download)

@@ -16,8 +16,8 @@ const (
 	tableNameTemplate                      = `"%s"`
 	timeColTemplate                        = tableNameTemplate
 	tableNameWithSchemaTemplate            = `"%s"."%s"`
-	createHTWithChunkIntervalQueryTemplate = `SELECT create_hypertable('%s', '%s', chunk_time_interval => interval '%s');`
-	createHTQueryTemplate                  = `SELECT create_hypertable('%s', '%s');`
+	createHTWithChunkIntervalQueryTemplate = `SELECT create_hypertable('%s', '%s', chunk_time_interval => interval '%s', create_default_indexes => FALSE);`
+	createHTQueryTemplate                  = `SELECT create_hypertable('%s', '%s', create_default_indexes => FALSE);`
 	createTimescaleExtensionQuery          = "CREATE EXTENSION IF NOT EXISTS timescaledb"
 	metadataKey                            = "outflux_last_usage"
 	getMetadataTemplate                    = `SELECT EXISTS (SELECT 1 FROM "%s"."%s" WHERE key = $1)`
@@ -53,9 +53,7 @@ func (d *defaultTableCreator) CreateTable(dbConn connections.PgxWrap, info *idrf
 		return err
 	}
 
-	// Skip creating hypertables
-	// return d.CreateHypertable(dbConn, info)
-	return nil
+	return d.CreateHypertable(dbConn, info)
 }
 
 func (d *defaultTableCreator) CreateHypertable(dbConn connections.PgxWrap, info *idrf.DataSet) error {

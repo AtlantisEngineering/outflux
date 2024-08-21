@@ -133,16 +133,15 @@ func (sm *TSSchemaManager) prepareWithCreateIfMissing(dataSet *idrf.DataSet, tab
 		}
 	}
 
-	// Skip creating hypertables
-	// isHypertable, err := sm.explorer.isHypertable(sm.dbConn, sm.schema, dataSet.DataSetName)
-	// if err != nil {
-	// 	return fmt.Errorf("could not check if table %s is hypertable", dataSet.DataSetName)
-	// }
+	isHypertable, err := sm.explorer.isHypertable(sm.dbConn, sm.schema, dataSet.DataSetName)
+	if err != nil {
+		return fmt.Errorf("could not check if table %s is hypertable", dataSet.DataSetName)
+	}
 
-	// if !isHypertable {
-	// 	err := sm.creator.CreateHypertable(sm.dbConn, dataSet)
-	// 	return err
-	// }
+	if !isHypertable {
+		err := sm.creator.CreateHypertable(sm.dbConn, dataSet)
+		return err
+	}
 
 	return sm.validatePartitioning(dataSet)
 
