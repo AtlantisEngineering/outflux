@@ -16,7 +16,7 @@ const (
 )
 
 func WantsSnakeCase() bool {
-	return os.Getenv("OUTFLUX_NO_JSON_SNAKE_CASE") != "true"
+	return os.Getenv("OUTFLUX_JSON_SNAKE_CASE") == "true"
 }
 
 // Copy of https://github.com/JamesNK/Newtonsoft.Json/blob/4738a64817bb753667d9ed0ea99c1f955d414b33/Src/Newtonsoft.Json/Utilities/StringUtils.cs#L218
