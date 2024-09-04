@@ -7,6 +7,7 @@ import (
 	"github.com/timescale/outflux/internal/connections"
 	"github.com/timescale/outflux/internal/idrf"
 	"github.com/timescale/outflux/internal/schemamanagement/schemaconfig"
+	"github.com/timescale/outflux/internal/utils"
 )
 
 // TSSchemaManager implements the schemamanagement.SchemaManager interface for TimescaleDB
@@ -42,6 +43,14 @@ func (sm *TSSchemaManager) FetchDataSet(dataSetIdentifier string) (*idrf.DataSet
 // PrepareDataSet prepares a table in TimeScale compatible with the provided dataSet
 func (sm *TSSchemaManager) PrepareDataSet(dataSet *idrf.DataSet, strategy schemaconfig.SchemaStrategy) error {
 	log.Printf("Selected Schema Strategy: %s", strategy.String())
+
+	if utils.WantsSnakeCase() {
+		dataSet.DataSetName = utils.ToSnakeCase(dataSet.DataSetName)
+		for i := range dataSet.Columns {
+			dataSet.Columns[i].Name = utils.ToSnakeCase(dataSet.Columns[i].Name)
+		}
+	}
+
 	tableExists, err := sm.explorer.tableExists(sm.dbConn, sm.schema, dataSet.DataSetName)
 	if err != nil {
 		return fmt.Errorf("could not prepare data set '%s'. Could not check if table exists. \n%v", dataSet.DataSetName, err)

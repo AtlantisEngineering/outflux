@@ -8,6 +8,7 @@ import (
 
 	"github.com/timescale/outflux/internal/connections"
 	"github.com/timescale/outflux/internal/idrf"
+	"github.com/timescale/outflux/internal/utils"
 )
 
 const (
@@ -65,6 +66,10 @@ func (d *defaultTableCreator) CreateHypertable(dbConn connections.PgxWrap, info 
 		hypertableName = fmt.Sprintf(tableNameTemplate, info.DataSetName)
 	}
 
+	if utils.WantsSnakeCase() {
+		hypertableName = utils.ToSnakeCase(hypertableName)
+	}
+
 	var hypertableQuery string
 	if d.chunkTimeInterval != "" {
 		hypertableQuery = fmt.Sprintf(createHTWithChunkIntervalQueryTemplate, hypertableName, info.TimeColumn, d.chunkTimeInterval)
@@ -117,19 +122,24 @@ func dataSetToSQLTableDef(schema string, dataSet *idrf.DataSet) string {
 	columnDefinitions := make([]string, len(dataSet.Columns))
 	for i, column := range dataSet.Columns {
 		dataType := idrfToPgType(column.DataType)
-		// columnDefinitions[i] = fmt.Sprintf(columnDefTemplate, utils.ToSnakeCase(column.Name), dataType)
-		columnDefinitions[i] = fmt.Sprintf(columnDefTemplate, column.Name, dataType)
+		columnName := column.Name
+		if utils.WantsSnakeCase() {
+			columnName = utils.ToSnakeCase(column.Name)
+		}
+		columnDefinitions[i] = fmt.Sprintf(columnDefTemplate, columnName, dataType)
 	}
 
 	columnsString := strings.Join(columnDefinitions, ", ")
 
 	var tableName string
 	if schema != "" {
-		// tableName = fmt.Sprintf(tableNameWithSchemaTemplate, schema, utils.ToSnakeCase(dataSet.DataSetName))
 		tableName = fmt.Sprintf(tableNameWithSchemaTemplate, schema, dataSet.DataSetName)
 	} else {
-		// tableName = fmt.Sprintf(tableNameTemplate, utils.ToSnakeCase(dataSet.DataSetName))
 		tableName = fmt.Sprintf(tableNameTemplate, dataSet.DataSetName)
+	}
+
+	if utils.WantsSnakeCase() {
+		tableName = utils.ToSnakeCase(tableName)
 	}
 
 	return fmt.Sprintf(createTableQueryTemplate, tableName, columnsString)

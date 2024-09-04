@@ -16,6 +16,10 @@ const (
 )
 
 func WantsSnakeCase() bool {
+	return os.Getenv("OUTFLUX_SNAKE_CASE") == "true"
+}
+
+func WantsJsonSnakeCase() bool {
 	return os.Getenv("OUTFLUX_JSON_SNAKE_CASE") == "true"
 }
 

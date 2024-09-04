@@ -8,6 +8,7 @@ This repo contains code for exporting complete InfluxDB databases or selected me
 
 This fork does the following:
 - Sets 'create_default_indexes' to FALSE in hypertables creations
+- Optionally, converts table and column names to snake_case before writing to Postgres (can be enabled by setting env var `OUTFLUX_SNAKE_CASE` to "true"). 
 - Optionally, converts jsons keys to snake_case before writing to Postgres (can be enabled by setting env var `OUTFLUX_JSON_SNAKE_CASE` to "true"). 
 
 ***

@@ -132,12 +132,14 @@ func copyToDb(args *ingestDataArgs, identifier *pgx.Identifier, tx *pgx.Tx, batc
 	source := pgx.CopyFromRows(batch)
 
 	// Snake case for table names and columns
-	// colNamesSnake := make([]string, len(args.colNames))
-	// for i := range args.colNames {
-	// 	colNamesSnake[i] = utils.ToSnakeCase(args.colNames[i])
-	// }
-	// args.colNames = colNamesSnake
-	// args.tableName = utils.ToSnakeCase(args.tableName)
+	if utils.WantsSnakeCase() {
+		colNamesSnake := make([]string, len(args.colNames))
+		for i := range args.colNames {
+			colNamesSnake[i] = utils.ToSnakeCase(args.colNames[i])
+		}
+		args.colNames = colNamesSnake
+		args.tableName = utils.ToSnakeCase(args.tableName)
+	}
 
 	_, err := args.dbConn.CopyFrom(*identifier, args.colNames, source)
 	if err != nil {
