@@ -8,6 +8,7 @@ This repo contains code for exporting complete InfluxDB databases or selected me
 
 This fork does the following:
 - Sets 'create_default_indexes' to FALSE in hypertables creations
+- Sets upper time bound (--to option) to be exclusive ('<' instead of '<=')
 - Optionally, converts table and column names to snake_case before writing to Postgres (can be enabled by setting env var `OUTFLUX_SNAKE_CASE` to "true"). 
 - Optionally, converts jsons keys to snake_case before writing to Postgres (can be enabled by setting env var `OUTFLUX_JSON_SNAKE_CASE` to "true"). 
 
@@ -167,7 +168,7 @@ Available flags are:
 | retention-policy           | string  | autogen               | The retention policy to select the data from |
 | limit                      | uint64  | 0                     | If specified will limit the export points to its value. 0 = NO LIMIT |
 | from                       | string  |                       | If specified will export data with a timestamp >= of its value. Accepted format: RFC3339 |
-| to                         | string  |                       | If specified will export data with a timestamp <= of its value. Accepted format: RFC3339 |
+| to                         | string  |                       | If specified will export data with a timestamp < of its value. Accepted format: RFC3339 |
 | output-conn                | string  | sslmode=disable       | Connection string to use to connect to the output database|
 | output-schema              | string  | public                | The schema of the output database that the data will be inserted into. |
 | schema-strategy            | string  | CreateIfMissing       | Strategy to use for preparing the schema of the output database. Valid options: ValidateOnly, CreateIfMissing, DropAndCreate, DropCascadeAndCreate |

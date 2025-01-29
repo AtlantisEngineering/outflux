@@ -68,13 +68,13 @@ func TestBuildSelectCommand(t *testing.T) {
 			measure: "m",
 			columns: []*idrf.Column{{Name: "col1"}},
 			to:      "b",
-			exp:     `SELECT "col1" FROM "m" WHERE time <= 'b'`,
+			exp:     `SELECT "col1" FROM "m" WHERE time < 'b'`,
 		}, {
 			measure: "m",
 			columns: []*idrf.Column{{Name: "col1"}},
 			from:    "a",
 			to:      "b",
-			exp:     `SELECT "col1" FROM "m" WHERE time >= 'a' AND time <= 'b'`,
+			exp:     `SELECT "col1" FROM "m" WHERE time >= 'a' AND time < 'b'`,
 		}, {
 			measure: "m",
 			columns: []*idrf.Column{{Name: "col1"}},
@@ -86,7 +86,7 @@ func TestBuildSelectCommand(t *testing.T) {
 			columns: []*idrf.Column{{Name: "col1"}},
 			from:    "a",
 			to:      "b",
-			exp:     `SELECT "col1" FROM "rep pol"."m" WHERE time >= 'a' AND time <= 'b'`,
+			exp:     `SELECT "col1" FROM "rep pol"."m" WHERE time >= 'a' AND time < 'b'`,
 		},
 	}
 

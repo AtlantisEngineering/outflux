@@ -41,7 +41,7 @@ func initMigrateCmd() *cobra.Command {
 	migrateCmd.PersistentFlags().String(flagparsers.RetentionPolicyFlag, flagparsers.DefaultRetentionPolicy, "The retention policy to select the data from")
 	migrateCmd.PersistentFlags().String(flagparsers.SchemaStrategyFlag, flagparsers.DefaultSchemaStrategy.String(), "Strategy to use for preparing the schema of the output database. Valid options: ValidateOnly, CreateIfMissing, DropAndCreate, DropCascadeAndCreate")
 	migrateCmd.PersistentFlags().String(flagparsers.FromFlag, "", "If specified will export data with a timestamp >= of it's value. Accepted format: RFC3339")
-	migrateCmd.PersistentFlags().String(flagparsers.ToFlag, "", "If specified will export data with a timestamp <= of it's value. Accepted format: RFC3339")
+	migrateCmd.PersistentFlags().String(flagparsers.ToFlag, "", "If specified will export data with a timestamp < of it's value. Accepted format: RFC3339")
 	migrateCmd.PersistentFlags().Uint64(flagparsers.LimitFlag, flagparsers.DefaultLimit, "If specified will limit the export points to it's value. 0 = NO LIMIT")
 	migrateCmd.PersistentFlags().Uint16(flagparsers.ChunkSizeFlag, flagparsers.DefaultChunkSize, "The export query will request the data in chunks of this size. Must be > 0")
 	migrateCmd.PersistentFlags().Uint16(flagparsers.DataBufferFlag, flagparsers.DefaultDataBufferSize, "Size of the buffer holding exported data ready to be inserted in the output database")
