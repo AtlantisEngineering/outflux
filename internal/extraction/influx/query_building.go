@@ -9,9 +9,9 @@ import (
 )
 
 const (
-	selectQueryDoubleBoundTemplate = "SELECT %s FROM %s WHERE time >= '%s' AND time <= '%s'"
+	selectQueryDoubleBoundTemplate = "SELECT %s FROM %s WHERE time >= '%s' AND time < '%s'"
 	selectQueryLowerBoundTemplate  = "SELECT %s FROM %s WHERE time >= '%s'"
-	selectQueryUpperBoundTemplate  = "SELECT %s FROM %s WHERE time <= '%s'"
+	selectQueryUpperBoundTemplate  = "SELECT %s FROM %s WHERE time < '%s'"
 	selectQueryNoBoundTemplate     = "SELECT %s FROM %s"
 	limitSuffixTemplate            = "LIMIT %d"
 	measurementNameTemplate        = `"%s"`
